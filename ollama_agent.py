@@ -38,7 +38,9 @@ class OllamaAgent:
             print(f"LLM generation failed: {error}")
             return "Sorry, I couldn't reach the language model. Please check your Ollama settings and try again."
 
-    def get_response(self, command):
+    def get_response(self, command, system_prompt=None):
+        if system_prompt:
+            self.messages[0] = {"role": "system", "content": system_prompt}
         self.messages.append({"role": "user", "content": command})
         assistant_reply = self.create_chat_completion(self.messages)
 
@@ -48,6 +50,6 @@ class OllamaAgent:
         self.messages = [self.messages[0]] + self.messages[-max_messages:]
         return assistant_reply
 
-    def reset_conversation(self):
-        """Forget prior turns while preserving the system prompt."""
-        self.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    def reset_conversation(self, system_prompt=SYSTEM_PROMPT):
+        """Forget prior turns and optionally set a different system prompt."""
+        self.messages = [{"role": "system", "content": system_prompt}]
