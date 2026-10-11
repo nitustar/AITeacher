@@ -1,0 +1,7 @@
+ollama
+python-dotenv
+SpeechRecognition
+PyAudio
+ollama
+edge-tts
+pygame
